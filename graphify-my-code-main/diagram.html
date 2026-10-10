@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--hatch-widget-bg, #16181d);
+    color: var(--hatch-widget-text, #e8eaf0);
+    padding: 20px 12px 24px;
+    display: flex; justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 640px; }
+  h1 { font-size: 21px; font-weight: 700; text-align: center; letter-spacing: .2px; }
+  .sub { text-align: center; color: var(--hatch-widget-muted, #9aa0ae); font-size: 13px; margin: 6px 0 18px; }
+  svg { width: 100%; height: auto; display: block; }
+  .legend { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 14px; font-size: 12px; color: var(--hatch-widget-muted, #9aa0ae); }
+  .sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: baseline; }
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 12.5px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--hatch-widget-border, #2a2e38); }
+  th { color: var(--hatch-widget-muted, #9aa0ae); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .4px; }
+  td.num { font-variant-numeric: tabular-nums; }
+  .cmds { margin-top: 16px; background: var(--hatch-widget-surface-muted, #1d2027); border: 1px solid var(--hatch-widget-border, #2a2e38); border-radius: 10px; padding: 12px 14px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; line-height: 1.75; overflow-x: auto; white-space: pre; color: var(--hatch-widget-text, #e8eaf0); }
+  .c { color: var(--hatch-widget-muted, #9aa0ae); }
+  .note { margin-top: 14px; font-size: 12.5px; color: var(--hatch-widget-muted, #9aa0ae); line-height: 1.6; text-align: center; }
+  .note b { color: var(--hatch-widget-text, #e8eaf0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>graphify-my-code</h1>
+  <div class="sub">repos &rarr; knowledge graph &rarr; answers &mdash; LLM only at the very end, only if you ask</div>
+
+  <svg viewBox="0 0 680 1060" role="img" aria-label="graphify-my-code pipeline diagram">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#8a90a0"/>
+      </marker>
+      <marker id="arrA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#d9a441"/>
+      </marker>
+    </defs>
+
+    <!-- ============ REPOS ============ -->
+    <rect x="140" y="8" width="400" height="66" rx="12" fill="none" stroke="#8a90a0" stroke-width="1.5"/>
+    <text x="340" y="36" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">Your repositories</text>
+    <text x="340" y="58" text-anchor="middle" font-size="12.5" fill="#9aa0ae">repoA &middot; repoB &middot; &hellip; &nbsp;—&nbsp; Java &middot; Python &middot; MyBatis XML</text>
+
+    <line x1="340" y1="74" x2="340" y2="102" stroke="#8a90a0" stroke-width="1.5" marker-end="url(#arr)"/>
+    <text x="352" y="94" font-size="11.5" fill="#9aa0ae">extract</text>
+
+    <!-- ============ LAYER 1 EXTRACT ============ -->
+    <rect x="60" y="106" width="560" height="218" rx="14" fill="rgba(88,120,255,0.07)" stroke="#5b78ff" stroke-width="1.5"/>
+    <text x="340" y="134" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">Layer 1 &middot; Extract</text>
+    <rect x="84" y="148" width="512" height="62" rx="10" fill="none" stroke="#5b78ff" stroke-width="1" stroke-dasharray="0"/>
+    <text x="104" y="172" font-size="13.5" font-weight="700" fill="currentColor">tree-sitter <tspan font-weight="400" fill="#9aa0ae">— default</tspan></text>
+    <text x="104" y="193" font-size="12" fill="#9aa0ae">fast &middot; multi-language &middot; .java, .py, mapper XML &nbsp; (~1s / 50 files)</text>
+    <rect x="84" y="218" width="512" height="62" rx="10" fill="none" stroke="#5b78ff" stroke-width="1"/>
+    <text x="104" y="242" font-size="13.5" font-weight="700" fill="currentColor">Joern <tspan font-weight="400" fill="#9aa0ae">— deep mode, --engine joern</tspan></text>
+    <text x="104" y="263" font-size="12" fill="#9aa0ae">CPG: type-resolved calls + annotations &middot; .java &nbsp; (~90s / 50 files)</text>
+    <text x="340" y="306" text-anchor="middle" font-size="11.5" fill="#9aa0ae">--incremental re-parses only changed files &middot; MyBatis XML &amp; Python always via tree-sitter</text>
+
+    <line x1="340" y1="324" x2="340" y2="352" stroke="#8a90a0" stroke-width="1.5" marker-end="url(#arr)"/>
+    <text x="340" y="372" text-anchor="middle" font-size="11.5" fill="#9aa0ae">entities.jsonl &middot; edges.jsonl &nbsp;— one pair per repo, human-inspectable</text>
+
+    <!-- ============ LAYER 2 BUILD ============ -->
+    <rect x="60" y="386" width="560" height="112" rx="14" fill="rgba(74,200,120,0.07)" stroke="#3ecf7f" stroke-width="1.5"/>
+    <text x="340" y="414" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">Layer 2 &middot; Build</text>
+    <text x="340" y="438" text-anchor="middle" font-size="12.5" fill="currentColor">merge all repos into one graph &middot; resolve every reference</text>
+    <text x="340" y="460" text-anchor="middle" font-size="12" fill="#9aa0ae">Joern refs &rarr; direct lookup &middot; leftovers &rarr; .unresolved.jsonl (kept visible)</text>
+    <text x="340" y="482" text-anchor="middle" font-size="12" font-weight="700" fill="#3ecf7f">knowledge.kuzu &nbsp;— embedded graph DB, Cypher queries, one file</text>
+
+    <line x1="340" y1="498" x2="340" y2="526" stroke="#8a90a0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- ============ LAYER 3 ENRICH ============ -->
+    <rect x="140" y="530" width="400" height="66" rx="12" fill="none" stroke="#a06ee0" stroke-width="1.5" stroke-dasharray="7 5"/>
+    <text x="340" y="556" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">Layer 3 &middot; Enrich <tspan font-weight="400" fill="#9aa0ae">— optional</tspan></text>
+    <text x="340" y="578" text-anchor="middle" font-size="12" fill="#9aa0ae">docs &rarr; MENTIONS edges link prose to code</text>
+
+    <line x1="340" y1="596" x2="340" y2="624" stroke="#8a90a0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- ============ QUERY ============ -->
+    <rect x="60" y="628" width="560" height="128" rx="14" fill="rgba(45,190,200,0.07)" stroke="#2dbec8" stroke-width="1.5"/>
+    <text x="340" y="656" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">Query — deterministic, no LLM needed</text>
+    <text x="340" y="682" text-anchor="middle" font-size="12.5" fill="currentColor">find &middot; callers &middot; callees &middot; impact &middot; trace &middot; dependents &middot; dependencies</text>
+    <text x="340" y="704" text-anchor="middle" font-size="12.5" fill="currentColor">endpoints &middot; tables &middot; queues &middot; raw cypher &middot; context (LLM-ready brief)</text>
+    <text x="340" y="730" text-anchor="middle" font-size="11.5" fill="#9aa0ae">Spring REST &middot; MyBatis tables &middot; JMS queues resolved at extract time</text>
+
+    <line x1="340" y1="756" x2="340" y2="788" stroke="#d9a441" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrA)"/>
+    <text x="352" y="778" font-size="11.5" fill="#d9a441">optional</text>
+
+    <!-- ============ LLM LAST MILE ============ -->
+    <rect x="60" y="792" width="560" height="158" rx="14" fill="rgba(217,164,65,0.06)" stroke="#d9a441" stroke-width="1.5" stroke-dasharray="7 5"/>
+    <text x="340" y="820" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">Last mile &middot; LLM — optional</text>
+    <text x="340" y="844" text-anchor="middle" font-size="12.5" fill="currentColor">ask &middot; summarize [--all] &nbsp;— runs only <tspan font-weight="700">after</tspan> deterministic results</text>
+    <text x="340" y="866" text-anchor="middle" font-size="12.5" fill="#d9a441">activates ONLY if CODEGRAPH_LLM_URL is set</text>
+    <text x="340" y="888" text-anchor="middle" font-size="12" fill="#9aa0ae">summaries &rarr; .summaries.jsonl &middot; surfaced inside context answers</text>
+    <text x="340" y="910" text-anchor="middle" font-size="12" fill="#9aa0ae">mappers, POJOs, tests &amp; framework code excluded from --all</text>
+
+    <!-- footer -->
+    <text x="340" y="986" text-anchor="middle" font-size="12.5" fill="#9aa0ae">Local-first: proprietary code <tspan font-weight="700" fill="currentColor">never leaves your machine</tspan> unless you point it at an LLM.</text>
+    <text x="340" y="1010" text-anchor="middle" font-size="12" fill="#5b78ff">github.com/willswins/graphify-my-code</text>
+  </svg>
+
+  <div class="legend">
+    <span><span class="sw" style="background:#5b78ff"></span>extract</span>
+    <span><span class="sw" style="background:#3ecf7f"></span>build</span>
+    <span><span class="sw" style="background:#a06ee0"></span>enrich</span>
+    <span><span class="sw" style="background:#2dbec8"></span>query</span>
+    <span><span class="sw" style="background:#d9a441"></span>LLM last mile (opt-in)</span>
+  </div>
+
+  <table>
+    <tr><th></th><th>tree-sitter (default)</th><th>Joern deep mode</th></tr>
+    <tr><td>extract, 50 files</td><td class="num">~1s</td><td class="num">~90s</td></tr>
+    <tr><td>CALLS edges</td><td class="num">257</td><td class="num">1,731</td></tr>
+    <tr><td>unresolved refs</td><td class="num">1,471</td><td class="num">0</td></tr>
+    <tr><td>REST endpoints</td><td class="num">17</td><td class="num">17</td></tr>
+  </table>
+  <div class="sub" style="margin-top:6px">measured on spring-petclinic, this VM</div>
+
+  <div class="cmds"><span class="c"># index (one or many repos), then build the graph</span>
+python -m codegraph.cli extract --repos ~/svc-a ~/svc-b --out ./data [--engine joern] [--incremental]
+python -m codegraph.cli build --data ./data --db ./knowledge.kuzu
+
+<span class="c"># ask the graph — no LLM involved</span>
+python -m codegraph.cli query --db ./knowledge.kuzu impact com.acme.Billing.charge
+python -m codegraph.cli context --db ./knowledge.kuzu com.acme.Billing.charge
+
+<span class="c"># last mile — only with CODEGRAPH_LLM_URL set</span>
+python -m codegraph.cli summarize --db ./knowledge.kuzu --all</div>
+
+  <div class="note"><b>Read it bottom-up:</b> everything below the amber line works with zero AI.<br>The LLM is a summarizer bolted on at the end — never the analyzer.</div>
+</div>
+</body>
+</html>

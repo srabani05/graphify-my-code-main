@@ -1,0 +1,7 @@
+tree-sitter>=0.25
+tree-sitter-java
+tree-sitter-python
+tree-sitter-javascript
+tree-sitter-go
+kuzu
+requests

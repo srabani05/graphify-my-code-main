@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.kuzu
+*.unresolved.jsonl
+.test-data/
+demo-data/
+joern-data/
+joern-pet-data/
+ts-pet-data/
+inc-data/
+inc-joern-data/
+workspace/
+*.summaries.jsonl
+*.pyc

@@ -1,0 +1,14 @@
+{
+  "repo": "petclinic-src",
+  "root": "/home/hatch/workspace/petclinic-src",
+  "langs": [
+    "java",
+    "python"
+  ],
+  "engine": "treesitter",
+  "files_indexed": 50,
+  "files_reparsed": 50,
+  "files_skipped": 0,
+  "incremental": false,
+  "indexed_at": "2026-10-03T04:51:23.279889+00:00"
+}

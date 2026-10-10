@@ -1,0 +1,13 @@
+{
+  "repo": "petclinic-src",
+  "root": "/home/hatch/workspace/petclinic-src",
+  "langs": [
+    "python"
+  ],
+  "engine": "joern",
+  "files_indexed": 45,
+  "files_reparsed": 0,
+  "files_skipped": 0,
+  "incremental": false,
+  "indexed_at": "2026-10-03T04:52:53.526805+00:00"
+}

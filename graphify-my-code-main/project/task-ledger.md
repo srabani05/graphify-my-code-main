@@ -1,0 +1,43 @@
+# MVP Task Ledger: Benefits Knowledge Graph
+
+This ledger is the step-by-step execution order for the **MVP - Flagship Flow** milestone. Complete tasks in order: do not start a task until its dependencies are done and its entry gate is satisfied. If a task is blocked, record the blocker and owner here before proceeding. Parallel work can shorten the calendar schedule, but this ledger intentionally defines the safe dependency order.
+
+**Pilot flow:** New hire → Eligibility → Enrollment → Premium calculation  
+**Pilot client:** TBD at kickoff  
+**Ledger owner:** Tech lead (TBD)  
+**Status values:** `Not started` / `In progress` / `Blocked` / `Done`  
+**Evidence:** Link a decision record, pull request, test run, or review notes in the Evidence column when marking a task done.
+
+| Order | Task | Depends on | Exit criteria | Status | Owner | Evidence |
+|---:|---|---|---|---|---|---|
+| 01 | Kick off and bound the pilot | None | Pilot client and flow are named; BA/PO, engineering, graph, security, and compliance owners are identified; internal hosting boundary and 8–10 week target are confirmed; source systems and approval owners are listed. | Not started | TBD | TBD |
+| 02 | Inventory sources and approve safe samples | 01 | Populate [repository context](repository-context.md) with the selected flow, approved service/E2E/config/contract/doc repos and paths, owners, classifications, and pinned revisions; select synthetic or explicitly sanitized samples; exclude member-level data; record allowed source paths and retention. | Not started | TBD | TBD |
+| 03 | Validate ontology and identifiers | 01, 02 | BA/PO and engineering approve MVP node/edge types, distinct `BusinessFlow`/`TestFlow` concepts and `FLOW-`/`TEST-` IDs, provenance fields, and uncertainty handling; a sample graph for the flagship flow is reviewed. Reconcile [ontology](ontology.md) with the [spec data contract](spec/graph-data-contract.md). | Not started | TBD | TBD; see [M1-1](issues/M1-1-ontology-and-naming.md) |
+| 04 | Decide graph and model architecture | 01, 03 | A decision record compares existing Kuzu with internally approved Neo4j/Neptune options; selects the graph store, hosting boundary, auth/audit approach, and LLM/provider approach; documents tradeoffs and operational ownership. No service is provisioned before this decision. | Not started | TBD | TBD |
+| 05 | Approve security controls and test plan | 02, 04 | Security/compliance approves threat boundary, data minimization, encryption, network, identity, retention, redaction failure behavior, audit fields, and PII validation tests; provider approval explicitly covers whether graph context may be sent to the selected model. Update [security checklist](security.md). | Not started | TBD | TBD |
+| 06 | Provision the internal graph development environment | 03, 04, 05 | Approved graph service is provisioned with restricted network and identity access, encryption, backups/retention, stable-ID constraints/indexes, and a documented restore path; only synthetic or approved sanitized data is used. | Not started | TBD | TBD; see [M1-2](issues/M1-2-graph-store-dev.md) |
+| 07 | Define ingestion contract and safety boundary | 03, 05, 06 | Versioned JSONL/API contract defines node/edge IDs, provenance, parser version, extraction time, idempotency, validation errors, and quarantine behavior; loaders reject raw member records and sensitive values; contract tests pass. | Not started | TBD | TBD |
+| 08 | Adapt code ingestion for the pilot | 07 | Existing tree-sitter/Joern pipeline is evaluated and reused where suitable; approved repository produces service, endpoint, code-entity, and call relationships with provenance and stable IDs; heuristic rule candidates are marked unverified; focused parser tests pass. | Not started | TBD | TBD; see [M2-1](issues/M2-1-code-parser.md) |
+| 09 | Implement config-metadata importer | 07 | Approved schema/config formats produce ConfigArtifact and Field metadata only; row-level values are excluded; uncertain classification fails closed; redaction/minimization tests inspect persisted properties and logs. | Not started | TBD | TBD; see [M2-2](issues/M2-2-config-importer.md) |
+| 10 | Implement E2E test parser | 07 | The selected test framework produces TestFlow/TestStep nodes with order and provenance; supported API/assertion links are evidence-based; response bodies and member fixtures are not persisted or logged; unresolved mappings are reported as gaps. | Not started | TBD | TBD; see [M2-3](issues/M2-3-e2e-test-parser.md) |
+| 11 | Load, normalize, and link flagship data | 08, 09, 10 | Repeatable import builds the selected client's flagship graph; stable IDs deduplicate re-runs; tests link to endpoints, config metadata, and rules where evidence supports the link; lineage and unresolved references are inspectable. | Not started | TBD | TBD |
+| 12 | Implement and verify core graph queries | 11 | Queries return the flagship flow, rule-to-code impact, endpoint/service links, and test coverage; results include provenance; query plans and result limits are documented; query tests pass against synthetic fixtures. | Not started | TBD | TBD |
+| 13 | Enforce graph authorization and audit | 06, 12 | Server-side authorization is verified for BA/PO and Dev/Arch roles; unauthorized reads/writes are denied; allowed reads and mutations emit audit events with actor, action, time, and outcome but no sensitive payload; tests pass. | Not started | TBD | TBD |
+| 14 | Complete redaction and privacy verification | 08, 09, 10, 11, 13 | Automated scans/tests cover graph properties, indexes, prompts, generated artifacts, logs, backups, and audit events using synthetic PII canaries; no canary persists or leaks; failure paths quarantine input; security owner signs off. | Not started | TBD | TBD |
+| 15 | Implement graph-grounded PRD and gap analysis | 04, 12, 14 | Approved model/provider is integrated within the approved boundary; requirement retrieval uses graph evidence; output follows the [PRD template](templates/prd.md), cites impacted entities/sources, distinguishes unknowns from facts, and is clearly a human-reviewed draft; waiting-period 30→60-day sample is evaluated. | Not started | TBD | TBD |
+| 16 | Build BA/PO flow explorer and PRD workflow | 13, 15 | Authorized BA/PO user can find the selected client and explore New hire → Eligibility → Enrollment → Premium calculation, inspect evidence/unknowns, and create/edit a PRD draft; UI/API tests cover access denial and normal use. | Not started | TBD | TBD |
+| 17 | Add pull-request graph update hook | 07, 11, 14 | A sample merged PR triggers an authenticated, auditable, idempotent metadata update; failed ingestion is visible and does not corrupt the last valid graph; CI tests verify the flow without production data. | Not started | TBD | TBD |
+| 18 | Run end-to-end MVP acceptance | 14, 15, 16, 17 | Starting from approved sanitized fixtures, demonstrate linked tests → endpoints → configs → rules, role-limited flow exploration, evidence-grounded waiting-period PRD/gap checklist, privacy checks, audit records, and merged-PR graph update; all milestone acceptance criteria pass. | Not started | TBD | TBD |
+| 19 | Pilot, resolve findings, and hand off | 18 | BA/PO, engineering, and security/compliance review the pilot; findings are triaged; critical privacy/access defects are fixed and retested; operating/onboarding docs and ownership are recorded; scale-up backlog and go/no-go decision are published. | Not started | TBD | TBD |
+
+## Execution Rules
+
+- Update status, owner, blocker, and evidence as each task moves; do not mark `Done` without its exit evidence.
+- Keep artifacts and processing inside the approved internal boundary. Use only synthetic or explicitly approved sanitized samples.
+- Treat extracted business meaning and LLM output as evidence-linked suggestions until a domain owner validates them.
+- A failed privacy, authorization, or audit gate blocks downstream pilot use; do not bypass the gate to meet a date.
+- The existing milestone estimates total 15 weeks if run sequentially. This strict ledger order will exceed the 8–10 week target unless approved work overlaps safely or the MVP is narrowed; update schedule and staffing during task 01 rather than silently dropping controls.
+
+## Milestone Exit
+
+Close the milestone only when tasks 01–19 are done, all [milestone acceptance criteria](milestones/mvp-flagship-flow.md) have evidence, and the pilot go/no-go decision is recorded.
