@@ -43,6 +43,7 @@ These estimates add up to 15 weeks if run sequentially. The 8–10 week MVP targ
 
 ## Starter GitHub Artifacts
 
+- [Implementation context pack](implementation-context/README.md)
 - [MVP milestone](milestones/mvp-flagship-flow.md)
 - [Issue drafts](issues/)
 - [Repository and single-flow context](repository-context.md)
